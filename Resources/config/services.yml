@@ -115,8 +115,8 @@ services:
     calls:
       - [ setMemoryCacheProvider, [ '@oro_akeneo.importexport.cache' ] ]
     tags:
-      - { name: 'oro_message_queue.client.message_processor', topicName: !php/const Creativestyle\Bundle\AkeneoBundle\Async\Topics::IMPORT_PRODUCTS }
-
+      - { name: 'oro_message_queue.client.message_processor', topicName: !php/const Creativestyle\Bundle\AkeneoBundle\Async\Topic\ImportProductsTopic::IMPORT_PRODUCTS }
+      
   Creativestyle\Bundle\AkeneoBundle\Async\Topics:
       tags:
           - { name: oro_message_queue.topic }
@@ -384,12 +384,18 @@ services:
   oro_akeneo.event_listener.deleted_attribute_relation:
     class: 'Creativestyle\Bundle\AkeneoBundle\EventListener\DeletedAttributeRelationListener'
     decorates: oro_entity_config.event_listener.deleted_attribute_relation
-    parent: oro_entity_config.event_listener.deleted_attribute_relation
+    arguments:
+        - '@oro_message_queue.client.message_producer'
+        - '@oro_entity_config.provider.deleted_attribute'
+        - '@Doctrine\Inflector\Inflector'
 
   oro_akeneo.event_listener.deleted_attribute_relation_serialized:
     class: 'Creativestyle\Bundle\AkeneoBundle\EventListener\DeletedAttributeRelationListener'
     decorates: oro_serialized_fields.event_listener.deleted_attribute_relation_serialized
-    parent: oro_serialized_fields.event_listener.deleted_attribute_relation_serialized
+    arguments:
+        - '@oro_message_queue.client.message_producer'
+        - '@oro_entity_config.provider.deleted_attribute'
+        - '@Doctrine\Inflector\Inflector'
 
   oro_akeneo.entity_config.importexport_field_configuration:
     class: Creativestyle\Bundle\AkeneoBundle\EntityConfig\ImportexportFieldConfiguration

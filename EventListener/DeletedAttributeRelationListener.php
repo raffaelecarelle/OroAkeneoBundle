@@ -24,12 +24,12 @@ class DeletedAttributeRelationListener extends BaseListener
         DeletedAttributeProviderInterface $deletedAttributeProvider,
         Inflector $inflector
     ) {
-        parent::__construct($messageProducer, $deletedAttributeProvider, $inflector);
+        parent::__construct($messageProducer, $deletedAttributeProvider);
 
         $this->inflector = $inflector;
     }
 
-    public function onFlush(OnFlushEventArgs $eventArgs)
+    public function onFlush(OnFlushEventArgs $eventArgs): void
     {
         $uow = $eventArgs->getEntityManager()->getUnitOfWork();
 
@@ -58,7 +58,7 @@ class DeletedAttributeRelationListener extends BaseListener
         }
     }
 
-    public function postFlush()
+    public function postFlush(): void
     {
         foreach ($this->deletedAttributesNames as $attributeFamilyId => $attributeNames) {
             if (!$attributeNames) {

@@ -27,13 +27,14 @@ class OroAkeneoExtension extends Extension
         $loader->load('controllers.yml');
         $loader->load('importexport.yml');
         $loader->load('services.yml');
+        $loader->load('mq_topic.yml');
         $loader->load('form_types.yml');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getAlias(): string
     {
         return self::ALIAS;
     }

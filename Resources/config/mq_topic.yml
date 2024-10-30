@@ -1,0 +1,7 @@
+services:
+    _instanceof:
+        Oro\Component\MessageQueue\Topic\TopicInterface:
+            tags:
+                - { name: oro_message_queue.topic }
+
+    Creativestyle\Bundle\AkeneoBundle\Async\Topic\ImportProductsTopic: ~
